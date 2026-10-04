@@ -1,0 +1,26 @@
+services:
+  frontend:
+    build:
+      context: ./FRONTEND
+      target: prod
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  backend:
+    build: ./BACKEND_MOCK
+    expose:
+      - "8000"
+    environment:
+      # true = admin widzi narzędzia testowe (awaria węzła, zgłoszenie nowego węzła)
+      SIMULATION: "true"
+      # adres koordynatora w sieci firmy — do ścieżek SMB/NFS i dodawania węzłów
+      COORDINATOR_IP: "192.168.1.10"
+      # tylko mock: szansa (0–1), że nowy węzeł odpowie przy dołączaniu — 0.5 = połowa prób się nie udaje
+      NODE_CONNECT_CHANCE: "0.5"
+    volumes:
+      # pliki z udziałów (osobny folder na każdy węzeł) i baza db.json — widoczne w BACKEND_MOCK/tempPliki
+      - ./BACKEND_MOCK/tempPliki:/app/tempPliki
+    restart: unless-stopped

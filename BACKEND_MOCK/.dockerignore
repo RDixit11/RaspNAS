@@ -1,0 +1,6 @@
+.venv
+tempPliki
+tests
+__pycache__
+*.pyc
+.pytest_cache
