@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./rules.yml:/etc/prometheus/rules.yml
+    command:
+      - '--web.enable-lifecycle'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    network_mode: host
+    command:
+      - '--web.listen-address=0.0.0.0:9100'
