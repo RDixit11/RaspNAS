@@ -54,7 +54,7 @@ function ApproveDialog({ request, onApproved }) {
           <DialogHeader>
             <DialogTitle>Dołącz {request.hostname} do klastra</DialogTitle>
             <DialogDescription>
-              Wpisz kod parowania wyświetlany przez agenta na urządzeniu {request.ip}. Dzięki temu do klastra nie dołączy
+              Wpisz kod parowania z urządzenia {request.ip}. Dzięki temu do klastra nie dołączy
               obce urządzenie.
             </DialogDescription>
           </DialogHeader>
@@ -73,7 +73,7 @@ function ApproveDialog({ request, onApproved }) {
             />
             {request.simulatedCode && (
               <p className="text-xs text-muted-foreground">
-                Symulacja — kod na ekranie urządzenia: <span className="font-mono text-foreground">{request.simulatedCode}</span>
+                Symulacja — kod na urządzeniu: <span className="font-mono text-foreground">{request.simulatedCode}</span>
               </p>
             )}
           </div>

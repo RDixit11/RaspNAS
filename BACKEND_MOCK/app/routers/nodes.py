@@ -87,7 +87,7 @@ def list_join_requests(
     result = []
     for join in store.read().join_requests:
         item = join.model_dump(by_alias=True, exclude={"code"})
-        # kod parowania normalnie widać tylko na ekranie nowego urządzenia — w symulacji podpowiadamy go w UI
+        # kod parowania normalnie jest tylko na nowym urządzeniu — w symulacji podpowiadamy go w UI
         if settings.simulation:
             item["simulatedCode"] = join.code
         result.append(item)
@@ -111,7 +111,7 @@ def simulate_join_request(
         join = JoinRequest(hostname=random.choice(HOSTNAMES), ip=ip, model=model, bays=bays, code=code)
         db.join_requests.append(join)
         log_event(db, "nodes", f"Nowy węzeł {join.hostname} ({ip}) zgłosił się do klastra.", user=user, request=request)
-    # kod normalnie widać tylko na ekranie nowego urządzenia — symulacja go zwraca, żeby dało się przetestować
+    # kod normalnie jest tylko na nowym urządzeniu — symulacja go zwraca, żeby dało się przetestować
     return join.model_dump(by_alias=True)
 
 
@@ -132,7 +132,7 @@ async def approve_join_request(
     if normalize(body.code) != normalize(join.code):
         with store.transaction() as db:
             log_event(db, "nodes", f"Zły kod parowania dla węzła {join.hostname} ({join.ip}).", level="warning", user=user, request=request)
-        raise HTTPException(400, "Kod nie zgadza się z kodem wyświetlanym na urządzeniu.")
+        raise HTTPException(400, "Kod nie zgadza się z kodem na urządzeniu.")
     if not await _agent_answers(settings):
         raise HTTPException(504, f"Węzeł {join.hostname} ({join.ip}) nie odpowiada. Sprawdź, czy agent działa, i spróbuj ponownie.")
 
